@@ -1,16 +1,17 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Igualdad Visible</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'estilos/styles.css' %}">
         <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body>
     
     <div class="corner-image">
-        <img src="./imagenes/Logo.png" alt="Imagen esquina superior derecha">
+        <img src="{% static 'imagenes/Logo.png' %}" alt="Imagen esquina superior derecha">
     </div>
     
     <main class="hero">

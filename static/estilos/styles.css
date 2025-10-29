@@ -3,7 +3,7 @@
   --bg-start: #0f172a;
   --bg-end: #ffffff;
   --text: #ffffff;
-  --bg-image: url("./imagenes/bg.png.png"); /* Ruta de la imagen de fondo (no tocada) */
+  --bg-image: url("../imagenes/bg.png.png"); /* Ruta de la imagen de fondo (no tocada) */
   --corner-size: 130px; /* tamaño del recuadro en la esquina */
 }
 
