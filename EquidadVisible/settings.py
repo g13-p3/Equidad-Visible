@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
+    'test_p.apps.TestPConfig',
+    'juego_a.apps.JuegoAConfig',
     'livereload',
 ]
 
