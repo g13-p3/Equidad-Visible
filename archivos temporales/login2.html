@@ -1,36 +1,46 @@
-{% extends 'interfaz/main.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Iniciar sesión - Igualdad Visible</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
 
-{% block content %}
+  <div class="corner-image">
+    <img src="./imagenes/Logo.png" alt="Logo">
+  </div>
+
   <main class="hero">
     <section class="login-card" aria-labelledby="login-title">
-      <h1 id="login-title" class="titulo" style="font-size:2rem; text-shadow:none;">Iniciar sesiÃ³n</h1>
+      <h1 id="login-title" class="titulo" style="font-size:2rem; text-shadow:none;">Iniciar sesión</h1>
 
-      <form method="POST" action="">
-        {% csrf_token %}
-
+      <form id="loginForm" novalidate>
         <div class="field">
-          <label for="email">Correo electrÃ³nico</label>
-          <input id="email" name="email" type="email" value="email" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
+          <label for="email">Correo electrónico</label>
+          <input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
           <div class="error" id="emailError" aria-live="polite"></div>
         </div>
 
         <div class="field">
+          <label for="password">Contraseña</label>
           <div class="password-wrap">
-            <label for="password">ContraseÃ±a</label>
-            <input id="password" name="password" type="password" value="password" placeholder="ContraseÃ±a" required autocomplete="current-password">
-            <button type="button" id="togglePwd" class="toggle-btn" aria-label="Mostrar contraseÃ±a">=A</button>
+            <input id="password" name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
+            <button type="button" id="togglePwd" class="toggle-btn" aria-label="Mostrar contraseña">=A</button>
           </div>
           <div class="error" id="passwordError" aria-live="polite"></div>
         </div>
 
         <div class="row">
           <label class="checkbox">
-            <input type="checkbox" id="remember"> RecuÃ©rdame
+            <input type="checkbox" id="remember"> Recuérdame
           </label>
         </div>
 
         <div class="row">
-          <button type="submit" class="boton-morado">Iniciar sesiÃ³n</button>
+          <button type="submit" class="boton-morado">Iniciar sesión</button>
         </div>
 
         <p class="muted" style="margin-top:12px;">Credenciales de ejemplo: <strong>equidad@visible.com</strong></p>
@@ -54,7 +64,7 @@
     toggle.addEventListener('click', () => {
       const t = password.type === 'password' ? 'text' : 'password';
       password.type = t;
-      toggle.setAttribute('aria-label', t === 'text' ? 'Ocultar contraseï¿½a' : 'Mostrar contraseï¿½a');
+      toggle.setAttribute('aria-label', t === 'text' ? 'Ocultar contraseña' : 'Mostrar contraseña');
       toggle.textContent = t === 'text' ? '=H' : '=A';
     });
 
@@ -65,10 +75,10 @@
       formMessage.textContent = '';
 
       if (!email.value) { emailError.textContent = 'Ingrese su correo.'; ok = false; }
-      else if (!/^\S+@\S+\.\S+$/.test(email.value)) { emailError.textContent = 'Correo invï¿½lido.'; ok = false; }
+      else if (!/^\S+@\S+\.\S+$/.test(email.value)) { emailError.textContent = 'Correo inválido.'; ok = false; }
 
-      if (!password.value) { passwordError.textContent = 'Ingrese su contraseï¿½a.'; ok = false; }
-      else if (password.value.length < 6) { passwordError.textContent = 'La contraseï¿½a debe tener al menos 6 caracteres.'; ok = false; }
+      if (!password.value) { passwordError.textContent = 'Ingrese su contraseña.'; ok = false; }
+      else if (password.value.length < 6) { passwordError.textContent = 'La contraseña debe tener al menos 6 caracteres.'; ok = false; }
 
       return ok;
     }
@@ -77,30 +87,31 @@
       e.preventDefault();
       if (!validate()) return;
 
-      // Simulaciï¿½n de autenticaciï¿½n (reemplazar por llamada a backend)
+      // Simulación de autenticación (reemplazar por llamada a backend)
       if (email.value === demo.email && password.value === demo.password) {
         formMessage.style.color = '#b7f5c6';
-        formMessage.textContent = 'Inicio de sesiï¿½n correcto. Redirigiendo...';
+        formMessage.textContent = 'Inicio de sesión correcto. Redirigiendo...';
         if (document.getElementById('remember').checked) {
           localStorage.setItem('authUser', email.value);
         } else {
           sessionStorage.setItem('authUser', email.value);
         }
-        // pequeï¿½o retardo para que el usuario vea el mensaje
+        // pequeño retardo para que el usuario vea el mensaje
         setTimeout(() => {
           window.location.href = 'pagina.html';
         }, 900);
       } else {
         formMessage.style.color = '#ffd6d6';
-        formMessage.textContent = 'Correo o contraseï¿½a incorrectos.';
+        formMessage.textContent = 'Correo o contraseña incorrectos.';
       }
     });
 
-    // Si ya estï¿½ autenticado, redirigir (comodidad)
+    // Si ya está autenticado, redirigir (comodidad)
     if (localStorage.getItem('authUser') || sessionStorage.getItem('authUser')) {
       window.location.href = 'pagina.html';
     }
   })();
 </script>
 
-{% endblock %}
+</body>
+</html>

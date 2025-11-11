@@ -12,4 +12,4 @@ def register(response):
     else:
         form = RegisterForm()
 
-    return render(response, '../plantillas/users/register.html', {'form':form})
+    return render(response, '../plantillas/registration/register.html', {'form':form})
