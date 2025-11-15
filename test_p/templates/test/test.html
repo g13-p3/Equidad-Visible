@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Equidad de Género</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Definiciones de color para el tema oscuro
+                        'primary': { 400: '#a371f7', 500: '#8c52ff' }, // Púrpura brillante
+                        'secondary': '#ff80ab', // Rosa suave
+                        'card-bg': '#1e1e1e', // Fondo de la tarjeta oscuro (negro mate)
+                        'dark-bg-subtle': '#0a0a0a', // Fondo general (revertido a oscuro neutro)
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Estilos CSS personalizados */
+        body {
+            /* Fondo principal más oscuro o neutro, asumiendo que el "colorido" 
+               se manejaría con una imagen de fondo o degradado si se añadiera. 
+               Por defecto, lo dejo en un negro muy profundo para contrastar. */
+            background-color: #0a0a0a; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            /* Texto base en blanco/gris claro para todo el cuerpo */
+            color: #d1d5db; 
+        }
+        
+        /* Estilo de la tarjeta principal (Fondo de las preguntas) */
+        .quiz-card {
+            /* Fondo de tarjeta negro mate (como solicitaste) */
+            background-color: #1e1e1e; 
+            /* Sombra y borde para resaltar */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* Asegurar que todos los textos dentro de la tarjeta sean blancos */
+        .quiz-card * {
+            color: inherit; /* Heredar color blanco/gris */
+        }
+        .quiz-card h1, .quiz-card h2, .quiz-card p {
+            color: #ffffff; /* Aseguramos blanco puro para títulos y preguntas */
+        }
+        .text-gray-600 {
+            color: #b0b0b0; /* Texto secundario en gris claro para contraste */
+        }
+
+        /* Estilos de los botones de opción */
+        .option-button {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: 1px solid #333; 
+            background-color: #2a2a2a; /* Fondo de botón oscuro */
+            color: #ffffff; 
+            font-weight: 500;
+        }
+        .option-button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 8px 25px rgba(163, 113, 247, 0.25); 
+            background-color: #383838; 
+        }
+        .option-button.selected {
+            /* Estilo seleccionado */
+            border: 3px solid #8c52ff; 
+            background-color: #331f4a; 
+            color: #ffffff; 
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(140, 82, 255, 0.6);
+            transform: scale(1.0);
+        }
+
+        /* Estilo del botón Siguiente/Finalizar (manteniendo el color) */
+        #next-button {
+            background: linear-gradient(90deg, #8c52ff, #a371f7); 
+            box-shadow: 0 4px 15px rgba(140, 82, 255, 0.4);
+            color: #ffffff; /* Asegurar que el texto sea blanco */
+        }
+        #next-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(140, 82, 255, 0.6);
+        }
+
+        /* Estilos de los resultados con degradado (manteniendo el color) */
+        .result-box-primary {
+            background: linear-gradient(45deg, #8c52ff, #a371f7);
+            box-shadow: 0 6px 20px rgba(140, 82, 255, 0.3);
+            color: #ffffff; /* Asegurar que el texto sea blanco */
+        }
+        .result-box-secondary {
+            background: linear-gradient(45deg, #ff80ab, #ec407a);
+            box-shadow: 0 6px 20px rgba(255, 128, 171, 0.3);
+            color: #ffffff; /* Asegurar que el texto sea blanco */
+        }
+
+        .spinner {
+            border-top-color: #8c52ff; 
+            border-left-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <main id="quiz-container" class="w-full max-w-4xl">
+        
+        <div class="quiz-card rounded-xl p-6 md:p-10">
+
+            <h1 class="text-3xl md:text-4xl font-extrabold text-primary-500 mb-6 text-center">
+                Cuestionario de Equidad de Género
+            </h1>
+
+            <!-- Área de Preguntas -->
+            <div id="quiz-area">
+                <div id="loading" class="text-center py-10 hidden">
+                    <div class="spinner w-8 h-8 border-4 border-gray-200 rounded-full mx-auto mb-4"></div>
+                    <!-- El texto de carga está en gris claro -->
+                    <p class="text-gray-600">Cargando cuestionario...</p>
+                </div>
+
+                <!-- Barra de Progreso -->
+                <div class="mb-6">
+                    <!-- Texto de progreso en gris claro -->
+                    <div class="flex justify-between text-sm font-medium text-gray-600 mb-1">
+                        <span id="progress-text">Pregunta 1 de 20</span>
+                        <span id="percentage-text">0%</span>
+                    </div>
+                    <!-- Fondo de la barra de progreso oscuro -->
+                    <div class="w-full bg-gray-700 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-primary-500 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Contenedor de la Pregunta -->
+                <div id="question-card" class="min-h-[150px]">
+                    <!-- Texto de la pregunta en blanco -->
+                    <h2 id="question-text" class="text-xl md:text-2xl font-semibold text-white mb-6"></h2>
+                    <div id="options-container" class="grid grid-cols-1 gap-4">
+                        <!-- Botones de opciones se insertarán aquí por JS -->
+                    </div>
+                </div>
+
+                <!-- Botón de Navegación -->
+                <div class="flex justify-end mt-8">
+                    <button id="next-button"
+                        class="px-6 py-3 font-bold rounded-lg shadow-md transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled>
+                        Siguiente
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Área de Resultados (Inicialmente oculta) -->
+            <div id="results-area" class="text-center py-10 hidden">
+                <h2 class="text-3xl font-bold text-white mb-4">
+                    ¡Cuestionario Completado!
+                </h2>
+                <!-- Texto de descripción en gris claro -->
+                <p class="text-lg text-gray-600 mb-8">
+                    Tus resultados sobre Equidad de Género son:
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-10">
+                    <!-- Las cajas de resultados tienen fondo de color y texto blanco -->
+                    <div class="p-6 rounded-xl result-box-primary w-full sm:w-1/2 shadow-lg">
+                        <p class="text-sm font-semibold opacity-90">Aciertos Totales</p>
+                        <p id="total-correct" class="text-4xl font-extrabold mt-1"></p>
+                        <p class="text-xl font-medium mt-1">/ <span id="total-questions"></span></p>
+                    </div>
+                    <div class="p-6 rounded-xl result-box-secondary w-full sm:w-1/2 shadow-lg">
+                        <p class="text-sm font-semibold opacity-90">Porcentaje</p>
+                        <p id="percentage-score" class="text-5xl font-extrabold mt-1"></p>
+                    </div>
+                </div>
+
+                <button id="restart-button"
+                    class="px-8 py-3 bg-gray-600 text-white font-bold rounded-lg hover:bg-gray-500 transition duration-150 shadow-md">
+                    Reiniciar Cuestionario
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Datos del cuestionario
+        const preguntas = [
+            {"texto": "¿Qué significa 'equidad de género'?", "opciones": {"A": "Que hombres y mujeres sean exactamente iguales", "B": "Dar a cada persona lo que necesita para tener las mismas oportunidades", "C": "Que las mujeres tengan más derechos que los hombres", "D": "Que todos piensen igual"}, "correcta": "B"},
+            {"texto": "¿Cuál es el objetivo principal de la equidad de género?", "opciones": {"A": "Promover solo los derechos de las mujeres", "B": "Aumentar los salarios de los hombres", "C": "Lograr justicia e igualdad de oportunidades entre géneros", "D": "Eliminar las diferencias biológicas"}, "correcta": "C"},
+            {"texto": "Un ejemplo de equidad de género en el trabajo es:", "opciones": {"A": "Dar el mismo puesto a un hombre aunque una mujer esté más preparada", "B": "Pagar lo mismo por el mismo trabajo, sin importar el género", "C": "Contratar solo mujeres", "D": "Dar más vacaciones a las mujeres"}, "correcta": "B"},
+            {"texto": "¿Qué diferencia hay entre igualdad y equidad de género?", "opciones": {"A": "Son lo mismo", "B": "La igualdad da lo mismo a todos; la equidad da según las necesidades", "C": "La equidad es menos importante que la igualdad", "D": "La igualdad solo aplica en el trabajo"}, "correcta": "B"},
+            {"texto": "¿Qué son los estereotipos de género?", "opciones": {"A": "Ideas fijas sobre cómo deben comportarse hombres y mujeres", "B": "Reglas oficiales del gobierno", "C": "Leyes internacionales sobre igualdad", "D": "Ninguna de las anteriores"}, "correcta": "A"},
+            {"texto": "Un ejemplo de estereotipo de género es:", "opciones": {"A": "Decir que los hombres no pueden llorar", "B": "Pensar que las mujeres manejan igual que los hombres", "C": "Promover la igualdad en la escuela", "D": "Fomentar el respeto mutuo"}, "correcta": "A"},
+            {"texto": "La equidad de género beneficia a:", "opciones": {"A": "Solo a las mujeres", "B": "Solo a los hombres", "C": "A toda la sociedad", "D": "A los niños únicamente"}, "correcta": "C"},
+            {"texto": "Un obstáculo común para la equidad de género es:", "opciones": {"A": "Los avances tecnológicos", "B": "Los prejuicios y estereotipos", "C": "El respeto mutuo", "D": "Las leyes de igualdad"}, "correcta": "B"},
+            {"texto": "La educación con enfoque de género busca:", "opciones": {"A": "Enseñar que un género es superior", "B": "Fomentar igualdad de oportunidades y respeto", "C": "Quitar materias a los hombres", "D": "Eliminar la historia tradicional"}, "correcta": "B"},
+            {"texto": "La violencia de género es:", "opciones": {"A": "Un tipo de conflicto normal", "B": "Cualquier acto que cause daño por razones de género", "C": "Una forma de educar", "D": "Un problema sin solución"}, "correcta": "B"},
+            {"texto": "¿Qué papel tiene el hombre en la equidad de género?", "opciones": {"A": "Ninguno", "B": "Ser aliado y compartir responsabilidades", "C": "Dejar que las mujeres decidan todo", "D": "No participar"}, "correcta": "B"},
+            {"texto": "Promover la equidad de género ayuda a:", "opciones": {"A": "Disminuir la pobreza y mejorar la convivencia", "B": "Aumentar los conflictos familiares", "C": "Reducir los derechos de algunos", "D": "Crear desigualdad"}, "correcta": "A"},
+            {"texto": "¿Por qué es importante la equidad de género en la sociedad?", "opciones": {"A": "Porque mejora la justicia, el respeto y el desarrollo de todos", "B": "Porque favorece solo a las mujeres", "C": "Porque es una moda", "D": "Porque elimina las diferencias biológicas"}, "correcta": "A"},
+            // Agregar preguntas simuladas para llegar a 20
+            {"texto": "Pregunta simulada 14: ¿Qué es una brecha de género?", "opciones": {"A":"Diferencia en el acceso a recursos o oportunidades basada en el género","B":"Un tipo de ropa","C":"Una herramienta de costura","D":"Un término musical"}, "correcta":"A"},
+            {"texto": "Pregunta simulada 15: ¿Qué rol tiene la familia en la equidad?", "opciones": {"A":"Mantener roles tradicionales","B":"Enseñar respeto y compartir tareas","C":"Solo el rol materno es importante","D":"Depende de la clase social"}, "correcta":"B"},
+            {"texto": "Pregunta simulada 16: ¿Qué significa 'techo de cristal'?", "opciones": {"A":"Un tipo de arquitectura moderna","B":"Barrera invisible que impide a las mujeres ascender a puestos altos","C":"Un lugar de trabajo transparente","D":"Un objeto de arte"}, "correcta":"B"},
+            {"texto": "Pregunta simulada 17: ¿Qué es el empoderamiento femenino?", "opciones": {"A":"Dar todo el poder a las mujeres","B":"Aumentar la participación y capacidad de las mujeres para tomar decisiones","C":"Que las mujeres solo se dediquen al hogar","D":"Un movimiento de moda"}, "correcta": "B"},
+            {"texto": "Pregunta simulada 18: ¿Qué implica la corresponsabilidad?", "opciones": {"A":"Que un género haga todo","B":"Reparto equitativo de tareas domésticas y cuidado entre géneros","C":"Solo la obligación de pagar impuestos","D":"Ser responsable de las decisiones de otros"}, "correcta":"B"},
+            {"texto": "Pregunta simulada 19: ¿Por qué es crucial la participación política de las mujeres?", "opciones": {"A":"Para asegurar que las políticas reflejen las necesidades de toda la población","B":"Solo para cumplir con una cuota legal","C":"Porque las mujeres son más empáticas","D":"No es importante"}, "correcta":"A"},
+            {"texto": "Pregunta simulada 20: ¿Cómo se llama el día internacional de la mujer?", "opciones": {"A":"8 de marzo","B":"1 de mayo","C":"25 de diciembre","D":"12 de octubre"}, "correcta":"A"},
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let selectedOption = null;
+
+        // Referencias a los elementos del DOM
+        const quizArea = document.getElementById('quiz-area');
+        const resultsArea = document.getElementById('results-area');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextButton = document.getElementById('next-button');
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.getElementById('progress-bar');
+        const percentageText = document.getElementById('percentage-text');
+        const totalCorrectSpan = document.getElementById('total-correct');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const percentageScoreSpan = document.getElementById('percentage-score');
+        const restartButton = document.getElementById('restart-button');
+
+
+        /**
+         * Renderiza la pregunta y las opciones actuales.
+         */
+        function renderQuestion() {
+            if (currentQuestionIndex >= preguntas.length) {
+                showResults();
+                return;
+            }
+
+            const currentQuestion = preguntas[currentQuestionIndex];
+            
+            // 1. Actualizar texto de progreso
+            const totalQuestions = preguntas.length;
+            progressText.textContent = `Pregunta ${currentQuestionIndex + 1} de ${totalQuestions}`;
+            const progress = ((currentQuestionIndex) / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+            percentageText.textContent = `${Math.floor(progress)}%`;
+
+            // 2. Mostrar pregunta
+            questionText.textContent = currentQuestion.texto;
+
+            // 3. Renderizar opciones
+            optionsContainer.innerHTML = '';
+            selectedOption = userAnswers[currentQuestionIndex] || null; // Carga la respuesta guardada
+            
+            // Deshabilitar el botón Siguiente si no hay una opción seleccionada
+            nextButton.disabled = !selectedOption;
+
+            for (const [letter, text] of Object.entries(currentQuestion.opciones)) {
+                const button = document.createElement('button');
+                button.textContent = `${letter}. ${text}`;
+                button.setAttribute('data-option', letter);
+                // Usamos las clases de Tailwind y el estilo .option-button
+                button.className = 'option-button w-full text-left p-4 rounded-lg text-white bg-card-bg focus:outline-none';
+                
+                // Marcar si fue la opción previamente seleccionada
+                if (letter === selectedOption) {
+                    button.classList.add('selected');
+                }
+
+                button.addEventListener('click', () => handleOptionClick(letter, button));
+                optionsContainer.appendChild(button);
+            }
+        }
+
+        /**
+         * Maneja la selección de una opción de respuesta.
+         * @param {string} option La letra de la opción seleccionada (A, B, C, D).
+         * @param {HTMLElement} clickedButton El botón que fue clickeado.
+         */
+        function handleOptionClick(option, clickedButton) {
+            // Desmarcar cualquier opción previamente seleccionada visualmente
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Marcar la nueva opción seleccionada
+            clickedButton.classList.add('selected');
+            
+            // Guardar la selección temporal y habilitar el botón Siguiente
+            selectedOption = option;
+            nextButton.disabled = false;
+        }
+
+        /**
+         * Guarda la respuesta y avanza a la siguiente pregunta.
+         */
+        function nextQuestion() {
+            if (selectedOption) {
+                // Guarda la respuesta final
+                userAnswers[currentQuestionIndex] = selectedOption;
+                
+                currentQuestionIndex++;
+                selectedOption = null; // Resetear la selección para la siguiente pregunta
+                
+                // Si aún quedan preguntas, renderizar la siguiente
+                if (currentQuestionIndex < preguntas.length) {
+                    renderQuestion();
+                    nextButton.disabled = true;
+
+                    // Si es la penúltima pregunta, cambiar el texto del botón
+                    if (currentQuestionIndex === preguntas.length - 1) {
+                        nextButton.textContent = 'Finalizar Cuestionario';
+                    } else {
+                        nextButton.textContent = 'Siguiente';
+                    }
+                    window.scrollTo(0, 0); // Desplazar al inicio
+                } else {
+                    // Si ya no quedan preguntas, mostrar resultados
+                    showResults();
+                }
+                
+            }
+        }
+
+        /**
+         * Muestra la pantalla de resultados.
+         */
+        function showResults() {
+            let correctCount = 0;
+            const totalQuestions = preguntas.length;
+
+            // Calcular aciertos
+            for (let i = 0; i < totalQuestions; i++) {
+                if (userAnswers[i] === preguntas[i].correcta) {
+                    correctCount++;
+                }
+            }
+            
+            // Actualizar barra de progreso al 100%
+            progressBar.style.width = '100%';
+            progressText.textContent = `Cuestionario Completado (${totalQuestions} de ${totalQuestions})`;
+            percentageText.textContent = '100%';
+            
+            const percentage = (correctCount / totalQuestions) * 100;
+
+            // Actualizar vista de resultados
+            totalQuestionsSpan.textContent = totalQuestions;
+            totalCorrectSpan.textContent = correctCount;
+            percentageScoreSpan.textContent = `${percentage.toFixed(1)}%`;
+
+            // Alternar vistas
+            quizArea.classList.add('hidden');
+            resultsArea.classList.remove('hidden');
+        }
+
+        /**
+         * Inicializa o reinicia el cuestionario.
+         */
+        function initQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            selectedOption = null;
+            
+            // Resetear vistas
+            resultsArea.classList.add('hidden');
+            quizArea.classList.remove('hidden');
+            nextButton.textContent = 'Siguiente';
+
+            renderQuestion();
+        }
+
+        // Event Listeners
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', initQuiz);
+
+        // Iniciar la aplicación al cargar la página
+        window.onload = initQuiz;
+
+    </script>
+</body>
+</html>
