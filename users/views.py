@@ -4,16 +4,16 @@ from .forms import RegisterForm
 from django.contrib.auth.models import User
 
 #def register(response):
-    if response.method == "POST":
-            form = RegisterForm(response.POST)
-            if form.is_valid():
-                    form.save()
+#if response.method == "POST":
+            #form = RegisterForm(response.POST)
+            #if form.is_valid():
+                    #form.save()
 
-            return redirect("/home")
-    else:
-        form = RegisterForm()
+            #return redirect("/home")
+    #else:
+        #form = RegisterForm()
 
-    return render(response, '../plantillas/registration/register.html', {'form':form})
+    #return render(response, '../plantillas/registration/register.html', {'form':form})
 
 def loginPage(request):
         if request.method=='POST':
@@ -26,4 +26,4 @@ def loginPage(request):
                         messages.error(request, 'Este usuario no existe')
 
         context={}
-        return render(request'../plantillas/login_register.html', context)
+        return render(request, '../plantillas/login_register.html', context)
