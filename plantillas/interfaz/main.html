@@ -9,11 +9,20 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'imagenes/Logo.png' %}"/>
     <link rel="stylesheet" href="{% static 'estilos/styles.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="{% static 'estilos/login.css'%}">
 </head>
 
 <body>
     
     {% include 'interfaz/navbar.html'%}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
     {% block content %}
 
