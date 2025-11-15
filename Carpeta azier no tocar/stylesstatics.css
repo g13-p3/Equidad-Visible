@@ -1,0 +1,428 @@
+:root{
+  /* Variables CSS Personalizadas */
+  --bg-start: #0f172a;
+  --bg-end: #ffffff;
+  --text: #ffffff;
+  --bg-image: url("../imagenes/bg.png"); /* Ruta de la imagen de fondo (no tocada) */
+  --corner-size: 130px; /* tamaño del recuadro en la esquina */
+}
+
+/* Reinicio Básico: Resetea márgenes y todo por defecto  */
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,body,#root{
+  height: 100%;
+}
+
+/* Estilos del BODY: Aplica la imagen de fondo y el degradado */
+body{
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(82, 50, 156, 0.123)), var(--bg-image);
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: center; 
+  background-attachment: fixed; 
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
+  scroll-behavior: smooth; 
+}
+
+/* Estilos para el recuadro de la imagen en esquina superior derecha */
+.corner-image{
+  position: absolute; top: 1rem; right: 1rem;
+  width: var(--corner-size); height: var(--corner-size);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0);
+  border: 2px solid rgba(255, 255, 255, 0);
+  background-color: rgba(255,255,255,0.03);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+}
+.corner-image img{
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* Estilos para la sección principal HERO (el título centrado) */
+.hero{
+  display: flex; align-items: center; justify-content: center;
+  min-height: 78vh; 
+  padding: 2rem;
+  text-align: center;
+}
+.titulo{
+  color: #ffffff;
+  font-size: clamp(2rem, 8vw, 6rem); 
+  line-height: 1; font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 0 6px 20px rgba(255, 255, 255, 0.747);
+}
+
+/* --- ESTILOS DE LOS BOTONES DE NAVEGACIÓN --- */
+.menu-botones-anclaje {
+    padding: 60px 20px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #1d1327 100%);
+    display: flex; flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center; 
+    align-items: center;
+}
+.boton-morado {
+    display: block; 
+    padding: 30px 110px; 
+    font-size: 1rem;
+    background-color: #7b1fa2; 
+    color: rgb(255, 255, 255); 
+    font-weight: bold;
+    text-decoration: none; 
+    text-align: center;
+    border-radius: 8px; 
+    transition: background-color 0.3s ease;
+    /* -- MODIFICADO (Añadido para que funcione como <button>) -- */
+    border: none;
+    cursor: pointer;
+}
+.boton-morado:hover {
+    background-color: #9c27b0; 
+}
+
+
+/* --- ESTILOS DE LAS SECCIONES DE DESTINO (MEJORAS SOLO EN TEXTO) --- */
+
+.seccion-destino {
+    padding: 90px 50px;
+    min-height: 50vh; 
+    color: #ffffff;
+    background: transparent; /* Mantener fondo global sin cambios */
+}
+
+/* Título principal de la sección (H2) — más elegante y legible */
+.seccion-destino h2 {
+    color: #ffffff !important; 
+    margin: 0 auto 28px;
+    font-size: 2.6rem;
+    text-align: center;
+    max-width: 1100px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.05;
+    position: relative;
+    padding-bottom: 18px;
+}
+
+/* Línea decorativa bajo el H2 */
+.seccion-destino h2::after{
+  content: "";
+  display: block;
+  width: 120px;
+  height: 6px;
+  margin: 18px auto 0;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #7b1fa2, #b57cff);
+  box-shadow: 0 8px 22px rgba(123,31,162,0.18);
+}
+
+/* Párrafos — mejorar legibilidad */
+.seccion-destino p {
+    line-height: 1.75;
+    margin: 0 auto 22px;
+    font-size: 1.05rem;
+    max-width: 980px;
+    color: #dcdcdc;
+    text-align: justify;
+    text-justify: inter-word;
+    letter-spacing: 0.01em;
+    hyphens: auto;
+}
+
+/* Puntos clave -> tarjetas más limpias y disposición mejorada */
+.puntos-clave {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: start;
+    text-align: left;
+    padding: 0 10px;
+}
+
+.puntos-clave > div {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+    border: 1px solid rgba(123,31,162,0.06);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+/* Hover suave para destacar */
+.puntos-clave > div:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 28px 60px rgba(0,0,0,0.6);
+}
+
+/* Subtítulos dentro de las tarjetas */
+.puntos-clave h3 {
+    font-size: 1.35rem;
+    color: #ffffff; /* tono morado suave */
+    margin-bottom: 12px;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+/* Mejor spacing para el texto dentro de las tarjetas */
+.puntos-clave > div p {
+    color: #e6e6e6;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Estilo para alternar colores de fondo entre secciones (no modificado) */
+/* -- MODIFICADO (Añadidas las nuevas secciones #foro y #faq) -- */
+#informacion, #estadisticas, #foro, #faq {
+    background-color: #1d1327; 
+}
+
+#prueba, #juego {
+    background-color: #1d1327;
+}
+
+/* Responsive: en pantallas pequeñas pasar a una columna */
+@media (max-width: 980px){
+  .puntos-clave {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 18px;
+  }
+  .seccion-destino h2{ font-size: 1.9rem; padding-bottom: 12px; }
+  .seccion-destino p{ font-size: 1rem; padding: 0 8px; }
+
+  /* --- INICIO DE NUEVOS ESTILOS RESPONSIVE --- */
+  .graficos-grid {
+    grid-template-columns: 1fr; /* Apila los gráficos en pantallas pequeñas */
+  }
+  /* --- FIN DE NUEVOS ESTILOS RESPONSIVE --- */
+}
+
+/* --- INICIO DE NUEVOS ESTILOS --- */
+
+/* --- Estilos para la sección de Estadísticas (Gráficos) --- */
+.graficos-grid {
+    display: grid;
+    /* Por defecto 2 columnas, si hay 3 gráficos, el último ocupará todo el ancho */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 28px;
+    max-width: 1200px; /* Coherente con .puntos-clave */
+    margin: 40px auto 0;
+    padding: 0 10px;
+}
+
+/* Si quieres que los 3 gráficos estén en una fila, usa: */
+/* .graficos-grid { grid-template-columns: repeat(3, 1fr); } */
+
+
+.grafico-card {
+    /* Estilo de tarjeta coherente con .puntos-clave > div */
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+    border: 1px solid rgba(123,31,162,0.06);
+    text-align: left;
+}
+
+.grafico-card h3 {
+    /* Estilo de título coherente con .puntos-clave h3 */
+    font-size: 1.35rem;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+/* --- Estilos para la sección de Mini-Foro --- */
+.foro-card-form {
+    /* Tarjeta para el formulario */
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding: 28px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+    border: 1px solid rgba(123,31,162,0.06);
+    max-width: 800px; /* Más angosto para un formulario */
+    margin: 40px auto;
+    text-align: left;
+}
+
+.foro-card-form h3 {
+    font-size: 1.35rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.foro-form .form-group {
+    margin-bottom: 16px;
+}
+
+.foro-form .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #dcdcdc;
+    font-size: 0.95rem;
+}
+
+.foro-form input[type="text"],
+.foro-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.15);
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit; /* Asegura que la fuente sea la misma */
+    outline: none;
+    transition: box-shadow 0.2s ease;
+}
+
+.foro-form input[type="text"]:focus,
+.foro-form textarea:focus {
+    box-shadow: 0 0 15px rgba(123,31,162,0.15);
+    border: 1px solid rgba(123,31,162,0.2);
+}
+
+/* Ajuste específico para el .boton-morado DENTRO del formulario */
+.foro-form .boton-morado {
+    width: 100%;
+    padding: 12px 18px; /* Padding más pequeño para un botón de formulario */
+    font-size: 1rem;
+    border-radius: 10px; /* Coherente con los inputs */
+}
+
+/* Contenedor de posteos */
+.foro-posteos {
+    max-width: 800px;
+    margin: 40px auto 0;
+    text-align: left;
+}
+
+.foro-posteos h3 {
+    font-size: 1.35rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.posteo {
+    /* Estilo de tarjeta para cada posteo */
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(123,31,162,0.06);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.posteo h4 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.posteo .posteo-fecha {
+    font-size: 0.85rem;
+    color: #b57cff; /* Tono morado para destacar */
+    margin-bottom: 12px;
+    font-style: italic;
+    display: block;
+}
+
+/* Anula el 'text-align: justify' y el 'margin-bottom' del p general */
+.posteo p {
+    text-align: left;
+    margin: 0;
+    color: #dcdcdc;
+    line-height: 1.65;
+    font-size: 1rem;
+}
+
+/* --- Estilos para la sección de FAQ --- */
+.faq-container {
+    max-width: 900px;
+    margin: 40px auto 0;
+    text-align: left;
+}
+
+.faq-item {
+    background: rgba(255,255,255,0.02);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(123,31,162,0.05);
+    /* Transición suave al abrir/cerrar */
+    transition: background-color 0.2s ease;
+}
+
+.faq-item:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+.faq-item summary {
+    font-weight: 800;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.1rem;
+    list-style: none; /* Elimina el marcador por defecto */
+    padding: 16px 20px;
+    position: relative;
+    outline: none; /* Oculta el outline de foco en Chrome */
+}
+
+/* Estilo para el ícono de + y - */
+.faq-item summary::after {
+    content: '+';
+    font-family: Arial, sans-serif;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #b57cff;
+    transition: transform 0.2s ease;
+}
+
+/* Cambia el ícono a - cuando el <details> está abierto */
+.faq-item[open] summary::after {
+    content: '−';
+    transform: translateY(-50%);
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none; /* Oculta el marcador en Safari */
+}
+
+/* Estilo para el párrafo de la respuesta */
+/* Anula el 'text-align: justify' y el 'margin' del p general */
+.faq-item p {
+    color: #e6e6e6;
+    line-height: 1.7;
+    font-size: 1rem;
+    margin: 0 20px 16px 20px; /* Márgenes para el texto interior */
+    padding-left: 0; /* Asegura que no haya padding extra */
+    text-align: left;
+}
+
+/* --- FIN DE NUEVOS ESTILOS --- */
