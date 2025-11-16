@@ -2,7 +2,6 @@
 
 {% block content %}
     <style>
-        /* Botón de iniciar sesión */
         .btn-login {
             position: fixed;
             top: 20px;
@@ -26,10 +25,14 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(123, 31, 162, 0.4);
         }
+
     </style>
 
-    <!-- Botón de Iniciar Sesión -->
-    <a href="#login" class="btn-login">Iniciar Sesión</a>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="btn-login">Cerrar Sesión</a>
+    {% else %}
+    <a href="login/" class="btn-login">Iniciar Sesión</a>
+    {% endif %}
 
     <main class="hero">
         <h1 class="titulo">IGUALDAD VISIBLE</h1>
@@ -37,9 +40,9 @@
 
     <section class="menu-botones-anclaje">
         <a href="#informacion" class="boton-morado">INFORMACIÓN</a>
-        <a href="#prueba" class="boton-morado">PRUEBA</a> 
-        <a href="#estadisticas" class="boton-morado">ESTADÍSTICAS</a>
+        <a href="#prueba" class="boton-morado">PRUEBA</a>
         <a href="#juego" class="boton-morado">JUEGO</a>
+        <a href="#estadisticas" class="boton-morado">ESTADÍSTICAS</a>
         <a href="#foro" class="boton-morado">FORO</a>
         <a href="#faq" class="boton-morado">FAQ</a>
     </section>
@@ -67,6 +70,12 @@
     <section id="prueba" class="seccion-destino">
         <h2>TEST DE PERCEPCIÓN</h2>
         <p>Contenido interactivo para que los usuarios evalúen sus conocimientos.</p>
+        <a href='test/' class='boton-morado'>Ponte a prueba</a>
+    </section>
+
+    <section id="juego" class="seccion-destino">
+        <h2>CONOCE MAS DE FORMA ENTRENIDA</h2>
+        <p>Un espacio lúdico para el aprendizaje.</p>
     </section>
 
     <section id="estadisticas" class="seccion-destino">
@@ -118,11 +127,6 @@
             </div>
 
         </div>
-    </section>
-
-    <section id="juego" class="seccion-destino">
-        <h2>CONOCE MAS DE FORMA ENTRENIDA</h2>
-        <p>Un espacio lúdico para el aprendizaje.</p>
     </section>
 
     <section id="foro" class="seccion-destino">

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import RegisterForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 #def register(response):
 #if response.method == "POST":
@@ -16,6 +17,7 @@ from django.contrib.auth.models import User
     #return render(response, '../plantillas/registration/register.html', {'form':form})
 
 def loginPage(request):
+        page = 'login'
         if request.method=='POST':
                 username=request.POST.get('username')
                 password = request.POST.get('password')
@@ -25,5 +27,13 @@ def loginPage(request):
                 except:
                         messages.error(request, 'Este usuario no existe')
 
-        context={}
-        return render(request, '../plantillas/login_register.html', context)
+        context={'page':page}
+        return render(request, 'registration/login_register.html', context)
+
+def logoutUser(request):
+        logout(request)
+        return redirect('home')
+
+def registerPage(request):
+        form = UserCreationForm()
+        return render(request, 'registration/login_register.html', {'form': form})
