@@ -26,10 +26,29 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(123, 31, 162, 0.4);
     }
+
+    .input-group i{
+      position: absolute;
+      height: 100%;
+      width: 50px;
+      color= #282626ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .input-group #eye{
+      right: 0;
+    }
+
+    .input-group #lock{
+      pointer-events: none;
+    }
   </style>
 
   <!-- Botón de volver a página principal -->
-  <a href="javascript:history.back()" class="btn-back">← Volver</a>
+  <a href='{% url 'home' %}' class="btn-back">← Volver</a>
 
   {% if page == 'login' %}
   <main class="hero">
@@ -47,9 +66,8 @@
 
         <div class="field">
           <label for="password">Contraseña</label>
-          <div class="password-wrap">
-            <input id="password" name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
-            <button type="button" id="togglePwd" class="toggle-btn" aria-label="Mostrar contraseña">=A</button>
+          <div class="input-group">
+            <input id="pass" name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
           </div>
           <div class="error" id="passwordError" aria-live="polite"></div>
         </div>
@@ -93,9 +111,8 @@
 
         <div class="field">
           <label for="password">Contraseña</label>
-          <div class="password-wrap">
-            <input id="password" name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
-            <button type="button" id="togglePwd" class="toggle-btn" aria-label="Mostrar contraseña">=A</button>
+          <div class="input-group">
+            <input id="pass" name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
           </div>
           <div class="error" id="passwordError" aria-live="polite"></div>
         </div>

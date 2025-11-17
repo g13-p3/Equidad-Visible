@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mujeres que Marcaron la Historia - Juego</title>
+    <!-- Incluimos la fuente Inter para un estilo moderno y limpio (como se usa en Tailwind) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta de colores inferida de login.css/login2.html */
+            --color-bg-dark: #121212; /* Fondo oscuro */
+            --color-card-bg: rgba(255,255,255,0.03); /* Fondo de la tarjeta (transparente/oscuro) */
+            --color-card-border: rgba(123,31,162,0.06); /* Borde sutil púrpura */
+            --color-text-light: #fff; /* Texto principal blanco */
+            --color-text-subtle: #eae6ff; /* Texto de etiquetas/botones */
+            --color-button-normal: rgba(255,255,255,0.05); /* Fondo de botón por defecto */
+            --color-button-hover: rgba(255,255,255,0.1); /* Fondo de botón hover */
+            --color-success: #b7f5c6; /* Color para mensajes de éxito */
+            --color-error: #ffd6d6; /* Color para mensajes de error */
+            --color-primary: #8b5cf6; /* Morado base (similar a boton-morado) */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-dark);
+            /* Usamos la imagen de fondo subida por el usuario */
+            background-image: url('bg.png.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            color: var(--color-text-light);
+        }
+
+        /* Estilo de tarjeta adaptado de .login-card */
+        .game-card {
+            width: 100%;
+            max-width: 650px;
+            background: linear-gradient(180deg, var(--color-card-bg), rgba(255,255,255,0.02));
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 18px 50px rgba(0,0,0,0.65);
+            border: 1px solid var(--color-card-border);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-primary); /* Título en color primario */
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(123,31,162,0.3);
+        }
+
+        h3 {
+            font-weight: 600;
+            margin: 15px 0 20px;
+            color: var(--color-text-subtle);
+            text-align: left; /* Alineación a la izquierda para dejar espacio a la derecha */
+        }
+
+        /* Contenedor de la pregunta con la imagen de fondo del personaje */
+        #contenido.con-imagen {
+            min-height: 250px; /* Asegura suficiente espacio para la imagen */
+            background-position: right bottom;
+            background-repeat: no-repeat;
+            background-size: contain; /* Ajusta la imagen sin recortarla */
+            padding-right: 120px; /* Espacio para que la imagen no tape el texto */
+            transition: background-image 0.5s ease-in-out;
+            text-align: left;
+        }
+
+        /* Contenedor de las opciones y feedback */
+        .opciones-container {
+            margin-top: 20px;
+            text-align: left; /* Alineación a la izquierda para las opciones */
+        }
+        
+        /* Estilo para los botones de opción y selección de personaje */
+        button {
+            display: block; /* Botones apilados para mejor visualización junto a la imagen */
+            margin: 8px 0;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px; /* Bordes más redondeados como en login.css */
+            cursor: pointer;
+            background: var(--color-button-normal);
+            color: var(--color-text-light);
+            font-weight: 700;
+            font-size: 1rem;
+            transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+            border: 1px solid rgba(255,255,255,0.06);
+            width: 90%; /* Ancho de los botones */
+            max-width: 450px;
+        }
+
+        button:hover { 
+            background: var(--color-button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(123,31,162,0.1);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Mensajes de feedback */
+        .feedback p {
+            font-weight: 700;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 450px;
+        }
+
+        .correcto { 
+            color: var(--color-success); 
+            background: rgba(183, 245, 198, 0.1);
+        }
+        
+        .incorrecto { 
+            color: var(--color-error); 
+            background: rgba(255, 214, 214, 0.1);
+        }
+
+        /* Responsive adjustments for mobile */
+        @media (max-width: 680px){
+            .game-card{ padding: 20px; margin: 0 5px; }
+            h1{ font-size: 1.5rem; }
+            button { width: 100%; max-width: none; }
+            .feedback p { width: 100%; max-width: none; }
+            #contenido.con-imagen {
+                background-image: none !important; /* Deshabilitar la imagen de fondo en móviles para ahorrar espacio */
+                padding-right: 0;
+                min-height: auto;
+                text-align: center;
+            }
+            h3 { text-align: center; }
+            .opciones-container { text-align: center; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="game-card">
+        <h1>Mujeres que Marcaron la Historia</h1>
+        <div id="contenido">
+            <!-- Contenido se carga con JS -->
+        </div>
+    </div>
+
+<script>
+    const contenido = document.getElementById("contenido");
+    let buenas = 0;
+    let persona = "";
+    let indicePregunta = 0;
+
+    // Mapeo de personajes a los archivos de imagen subidos
+    const imagenes = {
+        A: 'Elena caffarena.PNG',
+        B: 'Candelia perez.jpg',
+        C: 'Eloisa Diaz Insunza.jpg',
+        D: 'Paula jaraquemada.PNG'
+    };
+
+    // Datos del juego (iguales al original)
+    const datos = {
+        A: {
+            nombre: "Elena Caffarena",
+            preguntas: [
+                {texto: "¿Cuál fue el año de nacimiento de Elena Caffarena?", opciones: {A:"1902",B:"1903",C:"1909",D:"1907"}, buena:"B"},
+                {texto: "¿Cuál fue su mayor contribución a la lucha de la equidad de género?", opciones: {A:"Fue la primera abogada en Chile",B:"Fundó el primer hospital para mujeres",C:"Impulsó el derecho al voto femenino en Chile",D:"Luchó por la independencia de Chile"}, buena:"C"},
+                {texto: "¿Cuál fue la profesión de Elena Caffarena?", opciones: {A:"Escritora",B:"Abogada",C:"Médica",D:"Profesora de arte"}, buena:"B"}
+            ]
+        },
+        B: {
+            nombre: "Candelaria Pérez",
+            preguntas: [
+                {texto: "¿Cuál fue el año de nacimiento de Candelaria Pérez?", opciones: {A:"1833",B:"1810",C:"1905",D:"1780"}, buena:"B"},
+                {texto: "¿Cuál fue su mayor contribución a la lucha de la equidad de género?", opciones: {A:"Fundó el voto femenino",B:"Luchó por la educación universitaria femenina",C:"Fue la primera médica en Chile",D:"Participó como soldado en la Guerra contra la Confederación Perú-Boliviana, rompiendo estereotipos de género"}, buena:"D"},
+                {texto: "¿Cuál fue la profesión de Candelaria Pérez?", opciones: {A:"Científica",B:"Abogada",C:"Soldado/enfermera militar",D:"Escritora"}, buena:"C"}
+            ]
+        },
+        C: {
+            nombre: "Eloísa Díaz Insunza",
+            preguntas: [
+                {texto: "¿Cuál fue el año de nacimiento de Eloísa Díaz Insunza?", opciones: {A:"1866",B:"1910",C:"1899",D:"1823"}, buena:"A"},
+                {texto: "¿Cuál fue su mayor contribución a la lucha de la equidad de género?", opciones: {A:"Promovió el arte femenino en Chile",B:"Primera mujer en obtener un título universitario en Chile y en América del Sur",C:"Fue líder del movimiento sufragista",D:"Participó en batallas por la independencia"}, buena:"B"},
+                {texto: "¿Cuál fue la profesión de Eloísa Díaz Insunza?", opciones: {A:"Periodista",B:"Médica",C:"Política",D:"Abogada"}, buena:"B"}
+            ]
+        },
+        D: {
+            nombre: "Paula Jaraquemada",
+            preguntas: [
+                {texto: "¿Cuál fue el año de nacimiento de Paula Jaraquemada?", opciones: {A:"1840",B:"1799",C:"1768",D:"1812"}, buena:"C"},
+                {texto: "¿Cuál fue su mayor contribución a la lucha de la equidad de género?", opciones: {A:"Creó una ley de igualdad salarial",B:"Fundó el voto femenino",C:"Brindó refugio a patriotas durante la independencia, mostrando liderazgo femenino en tiempos de guerra",D:"Fue la primera abogada chilena"}, buena:"C"},
+                {texto: "¿Cuál fue la profesión de Paula Jaraquemada?", opciones: {A:"Médica",B:"Patriota / terrateniente",C:"Escritora",D:"Política"}, buena:"B"}
+            ]
+        }
+    };
+
+    // pantalla inicial
+    mostrarSeleccion();
+
+    function mostrarSeleccion() {
+        // Eliminar el fondo de imagen del personaje al volver a la selección
+        contenido.style.backgroundImage = 'none';
+        contenido.classList.remove('con-imagen');
+
+        contenido.innerHTML = `
+            <p><strong>Seleccione qué personaje va a jugar:</strong></p>
+            <div class="opciones-container">
+                <button onclick="seleccionar('A')">A: Elena Caffarena</button>
+                <button onclick="seleccionar('B')">B: Candelaria Pérez</button>
+                <button onclick="seleccionar('C')">C: Eloísa Díaz Insunza</button>
+                <button onclick="seleccionar('D')">D: Paula Jaraquemada</button>
+            </div>
+        `;
+        contenido.style.textAlign = 'center'; // Centrar botones en la selección
+    }
+
+    function seleccionar(opcion) {
+        persona = opcion;
+        buenas = 0;
+        indicePregunta = 0;
+        mostrarPregunta();
+    }
+
+    function mostrarPregunta() {
+        const personaje = datos[persona];
+        const pregunta = personaje.preguntas[indicePregunta];
+        const imagenUrl = imagenes[persona];
+        
+        // Aplicar la imagen de fondo y la clase CSS para el layout
+        contenido.classList.add('con-imagen');
+        contenido.style.backgroundImage = `url('${imagenUrl}')`;
+        contenido.style.textAlign = 'left';
+
+        let html = `<h3>${pregunta.texto}</h3><div class="opciones-container">`;
+        for (let key in pregunta.opciones) {
+            // Se usa la función 'responder' en lugar de un evento anónimo para manejar la interacción
+            html += `<button onclick="responder('${key}')">${key}: ${pregunta.opciones[key]}</button>`;
+        }
+        html += `</div><div id="feedback" class="feedback"></div>`;
+        contenido.innerHTML = html;
+    }
+
+    function responder(opcion) {
+        const personaje = datos[persona];
+        const pregunta = personaje.preguntas[indicePregunta];
+        const feedback = document.getElementById("feedback");
+
+        // Deshabilitar todos los botones de opción para evitar respuestas múltiples
+        document.querySelectorAll('.opciones-container button').forEach(button => {
+            button.disabled = true;
+        });
+
+        if (["A","B","C","D"].includes(opcion)) {
+            if (opcion === pregunta.buena) {
+                feedback.innerHTML = "<p class='correcto'>¡Respuesta Correcta!</p>";
+                buenas++;
+            } else {
+                feedback.innerHTML = `<p class='incorrecto'>Incorrecto :( <br>La respuesta correcta es ${pregunta.buena}) ${pregunta.opciones[pregunta.buena]}</p>`;
+            }
+        } else {
+            feedback.innerHTML = "<p class='incorrecto'>Respuesta inválida. Su respuesta será nula.</p>";
+        }
+
+        // Esperar y avanzar a la siguiente pregunta o resultado
+        setTimeout(() => {
+            indicePregunta++;
+            if (indicePregunta < datos[persona].preguntas.length) {
+                mostrarPregunta();
+            } else {
+                mostrarResultado();
+            }
+        }, 1500); // Pequeño aumento de tiempo para ver el feedback.
+    }
+
+    function mostrarResultado() {
+        // Eliminar el fondo de imagen del personaje
+        contenido.style.backgroundImage = 'none';
+        contenido.classList.remove('con-imagen');
+        contenido.style.textAlign = 'center'; // Volver a centrar los resultados
+
+        let mensajeFinal = "";
+        if (buenas === 3) mensajeFinal = "¡Felicitaciones! Ha obtenido un puntaje perfecto. Eres un/a experto/a en estas grandes mujeres :)";
+        else if (buenas === 2) mensajeFinal = "¡Casi! Tus conocimientos son casi perfectos, ¡sigue intentando y lograrás la perfección!";
+        else mensajeFinal = "Aún te falta mucho por aprender de estas valientes mujeres, ¡pero sigue intentando!";
+
+        contenido.innerHTML = `
+            <h3>Resultados del juego - ${datos[persona].nombre}</h3>
+            <p>Su puntaje ha sido de: <strong style="color:var(--color-primary); font-size:1.2rem;">${buenas} de 3</strong></p>
+            <p>${mensajeFinal}</p>
+            <button onclick="mostrarSeleccion()">Reiniciar Juego</button>
+        `;
+    }
+</script>
+</body>
+</html>

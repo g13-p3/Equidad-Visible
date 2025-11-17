@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import RegisterForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
 
 #def register(response):
 #if response.method == "POST":

@@ -20,17 +20,19 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'base.apps.BaseConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base.apps.BaseConfig',
     'users.apps.UsersConfig',
     'test_p.apps.TestPConfig',
-    'juego_a.apps.JuegoAConfig',
+    'juego.apps.JuegoConfig',
     'livereload',
 ]
+
+AUTH_USER_MODEL = 'base.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
