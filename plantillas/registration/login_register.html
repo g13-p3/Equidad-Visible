@@ -100,37 +100,8 @@
 
       <form method="POST" action="">
         {% csrf_token %}
-
-        
-
-        <div class="field">
-          <label for="email">Correo electrónico</label>
-          <input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
-          <div class="error" id="emailError" aria-live="polite"></div>
-        </div>
-
-        <div class="field">
-          <label for="password">Contraseña</label>
-          <div class="input-group">
-            <input id="pass" name="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
-          </div>
-          <div class="error" id="passwordError" aria-live="polite"></div>
-        </div>
-
-        <div class="row">
-          <label class="checkbox">
-            <input type="checkbox" id="remember"> Recuérdame
-          </label>
-        </div>
-
-        <div class="row">
-          <button type="submit" class="boton-morado">Iniciar sesión</button>
-        </div>
-
-        <p class="muted" style="margin-top:12px;">Credenciales de ejemplo: <strong>equidad@visible.com</strong></p>
-        <div id="formMessage" class="form-message" aria-live="polite"></div>
-      </form>
-
+        {{form.as_p}}
+        <input type="submit" valure="Register" />
       <p>¿Ya tienes una cuenta?</p>
       <a href='{% url 'login' %}'>Inicia Sesión</a>
 
